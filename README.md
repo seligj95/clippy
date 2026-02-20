@@ -117,18 +117,6 @@ Clipboard history is stored as JSON at:
 ~/Library/Application Support/Clippy/history.json
 ```
 
-## Publishing a Release
-
-When you push an update, users will be notified automatically:
-
-1. Update the version in `Clippy/Sources/Models/AppVersion.swift` and `Clippy/Info.plist`
-2. Run `./bundle.sh` to build and create `Clippy.app.zip`
-3. Create a GitHub Release with tag `vX.Y.Z` (e.g., `v1.1.0`)
-4. Attach `Clippy.app.zip` to the release
-5. Add release notes describing what changed
-
-Clippy checks for updates on launch and shows an "Update Available" badge in the menu bar and Preferences > About tab. Users can install with one click.
-
 ## License
 
 MIT
