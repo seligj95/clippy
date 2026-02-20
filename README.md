@@ -2,6 +2,8 @@
 
 A lightweight clipboard history manager for macOS, inspired by Windows' `Win+V`. Quickly access your clipboard history and emoji picker from a floating panel.
 
+![Clippy UI](assets/app-interface.png)
+
 ## Features
 
 - **Clipboard History** — Automatically saves text, images, and files you copy
