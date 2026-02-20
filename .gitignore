@@ -1,6 +1,7 @@
 # Build artifacts
 .build/
 Clippy.app/
+Clippy.app.zip
 Clippy.iconset/
 
 # Swift Package Manager
