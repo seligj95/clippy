@@ -30,6 +30,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // Prompt for accessibility on first launch
         AccessibilityService.ensureAccessibility()
 
+        // Check if we just updated and need to re-grant Accessibility
+        checkPostUpdate()
+
         // Check for updates in the background
         Task {
             await UpdateService.shared.checkForUpdates()
@@ -37,6 +40,33 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 updateMenuItem?.title = "⬆ Update Available!"
                 updateMenuItem?.isHidden = false
             }
+        }
+    }
+
+    private func checkPostUpdate() {
+        let lastVersion = UserDefaults.standard.string(forKey: "lastRunVersion")
+        let currentVersion = AppVersion.current
+
+        if let lastVersion, lastVersion != currentVersion {
+            // App was just updated — check if Accessibility was lost
+            UserDefaults.standard.set(currentVersion, forKey: "lastRunVersion")
+            if !AccessibilityService.isTrusted {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    let alert = NSAlert()
+                    alert.messageText = "Clippy Updated to v\(currentVersion)"
+                    alert.informativeText = "After updating, macOS may require you to re-grant Accessibility permission.\n\nGo to System Settings > Privacy & Security > Accessibility, remove Clippy, then re-add it."
+                    alert.alertStyle = .informational
+                    alert.addButton(withTitle: "Open Accessibility Settings")
+                    alert.addButton(withTitle: "Later")
+                    let response = alert.runModal()
+                    if response == .alertFirstButtonReturn {
+                        AccessibilityService.requestPermission()
+                    }
+                }
+            }
+        } else if lastVersion == nil {
+            // First launch ever
+            UserDefaults.standard.set(currentVersion, forKey: "lastRunVersion")
         }
     }
 
