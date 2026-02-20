@@ -18,31 +18,24 @@ A lightweight clipboard history manager for macOS, inspired by Windows' `Win+V`.
 ## Requirements
 
 - macOS 14.0+
-- Swift 5.9+ / Swift Command Line Tools
 
-## Building
+## Installation
+
+Download **Clippy.app.zip** from the [latest release](https://github.com/seligj95/clippy/releases/latest), unzip it, and move `Clippy.app` to `/Applications`.
+
+> **Note:** macOS will block unsigned apps the first time — see [Gatekeeper Notice](#gatekeeper-notice) below. You'll also need to grant [Accessibility permission](#permissions).
+
+## Building from Source
+
+If you'd prefer to build and bundle locally:
 
 ```bash
+# Requires Swift 5.9+ / Swift Command Line Tools
+
 # Debug build
 swift build
 
 # Release build + .app bundle
-./bundle.sh
-```
-
-## Installation
-
-### Download (recommended)
-
-1. Download **Clippy.app.zip** from the [latest release](https://github.com/seligj95/clippy/releases/latest)
-2. Unzip and move `Clippy.app` to `/Applications`
-3. Open Clippy — see [Gatekeeper Notice](#gatekeeper-notice) below if macOS blocks it
-4. Grant [Accessibility permission](#permissions)
-
-### Build from Source
-
-```bash
-# Build and bundle
 ./bundle.sh
 
 # Copy to Applications
