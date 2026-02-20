@@ -1,4 +1,5 @@
 import SwiftUI
+import AppKit
 import LaunchAtLogin
 
 struct SettingsView: View {
@@ -8,6 +9,7 @@ struct SettingsView: View {
     let onClearHistory: () -> Void
 
     @State private var showClearConfirmation = false
+    @ObservedObject private var updateService = UpdateService.shared
 
     var body: some View {
         TabView {
@@ -26,7 +28,7 @@ struct SettingsView: View {
                     Label("About", systemImage: "info.circle")
                 }
         }
-        .frame(width: 420, height: 280)
+        .frame(width: 420, height: 340)
     }
 
     @ViewBuilder
@@ -116,15 +118,102 @@ struct SettingsView: View {
             Text("Clippy")
                 .font(.title)
                 .fontWeight(.bold)
-            Text("Version 1.0.0")
+            Text("Version \(AppVersion.current)")
                 .font(.caption)
                 .foregroundStyle(.secondary)
             Text("A clipboard history manager for macOS")
                 .font(.body)
                 .foregroundStyle(.secondary)
+
+            Divider()
+                .padding(.horizontal, 40)
+
+            // Update section
+            updateSection
+
             Spacer()
         }
         .frame(maxWidth: .infinity)
         .padding()
+        .task {
+            await updateService.checkForUpdates()
+        }
+    }
+
+    @ViewBuilder
+    private var updateSection: some View {
+        if updateService.isChecking {
+            HStack(spacing: 6) {
+                ProgressView()
+                    .controlSize(.small)
+                Text("Checking for updates...")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        } else if updateService.updateAvailable, let latest = updateService.latestVersion {
+            VStack(spacing: 8) {
+                HStack(spacing: 4) {
+                    Image(systemName: "arrow.down.circle.fill")
+                        .foregroundStyle(.blue)
+                    Text("Version \(latest) available!")
+                        .font(.caption)
+                        .fontWeight(.medium)
+                }
+
+                if let notes = updateService.releaseNotes, !notes.isEmpty {
+                    Text(notes)
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(3)
+                        .frame(maxWidth: 280)
+                }
+
+                if updateService.isDownloading {
+                    ProgressView("Downloading update...")
+                        .controlSize(.small)
+                } else {
+                    HStack(spacing: 12) {
+                        if updateService.downloadURL != nil {
+                            Button("Install Update") {
+                                Task { await updateService.downloadAndInstall() }
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .controlSize(.small)
+                        }
+
+                        if let releaseURL = updateService.releaseURL {
+                            Button("View Release") {
+                                NSWorkspace.shared.open(releaseURL)
+                            }
+                            .controlSize(.small)
+                        }
+                    }
+                }
+            }
+        } else if let error = updateService.error {
+            HStack(spacing: 4) {
+                Image(systemName: "exclamationmark.triangle")
+                    .foregroundStyle(.orange)
+                Text(error)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+            Button("Retry") {
+                Task { await updateService.checkForUpdates() }
+            }
+            .controlSize(.small)
+        } else {
+            HStack(spacing: 4) {
+                Image(systemName: "checkmark.circle")
+                    .foregroundStyle(.green)
+                Text("You're up to date")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            Button("Check for Updates") {
+                Task { await updateService.checkForUpdates() }
+            }
+            .controlSize(.small)
+        }
     }
 }

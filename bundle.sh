@@ -27,8 +27,21 @@ echo -n "APPL????" > "$BUNDLE_DIR/Contents/PkgInfo"
 
 echo ""
 echo "✅ Created $BUNDLE_DIR"
+
+# Create a zip for GitHub Releases
+echo "Creating release zip..."
+ditto -c -k --sequesterRsrc --keepParent "$BUNDLE_DIR" "Clippy.app.zip"
+echo "✅ Created Clippy.app.zip (upload this to GitHub Releases)"
+
 echo ""
-echo "To install, run:"
+echo "To install locally, run:"
 echo "  cp -r $BUNDLE_DIR /Applications/"
+echo ""
+echo "To publish a release:"
+echo "  1. Update AppVersion.current in Clippy/Sources/Models/AppVersion.swift"
+echo "  2. Update CFBundleShortVersionString in Clippy/Info.plist"
+echo "  3. Run: ./bundle.sh"
+echo "  4. Create a GitHub Release with tag vX.Y.Z"
+echo "  5. Attach Clippy.app.zip to the release"
 echo ""
 echo "Then open from /Applications or Spotlight."

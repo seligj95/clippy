@@ -20,6 +20,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let storageManager = StorageManager()
     private let clipboardMonitor = ClipboardMonitor()
     private var settingsWindow: NSWindow?
+    private var updateMenuItem: NSMenuItem?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupStatusItem()
@@ -28,6 +29,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         // Prompt for accessibility on first launch
         AccessibilityService.ensureAccessibility()
+
+        // Check for updates in the background
+        Task {
+            await UpdateService.shared.checkForUpdates()
+            if UpdateService.shared.updateAvailable {
+                updateMenuItem?.title = "⬆ Update Available!"
+                updateMenuItem?.isHidden = false
+            }
+        }
     }
 
     // MARK: - Status Item (Menu Bar)
@@ -51,6 +61,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let prefsItem = NSMenuItem(title: "Preferences...", action: #selector(openSettings), keyEquivalent: ",")
         prefsItem.target = self
         menu.addItem(prefsItem)
+
+        let updateItem = NSMenuItem(title: "Check for Updates...", action: #selector(checkForUpdates), keyEquivalent: "")
+        updateItem.target = self
+        menu.addItem(updateItem)
+        updateMenuItem = updateItem
 
         menu.addItem(NSMenuItem.separator())
 
@@ -146,7 +161,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         })
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 420, height: 280),
+            contentRect: NSRect(x: 0, y: 0, width: 420, height: 340),
             styleMask: [.titled, .closable],
             backing: .buffered,
             defer: false
@@ -176,6 +191,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     // MARK: - Quit
+
+    @objc private func checkForUpdates() {
+        Task {
+            await UpdateService.shared.checkForUpdates()
+            if UpdateService.shared.updateAvailable {
+                updateMenuItem?.title = "⬆ Update Available!"
+                openSettings()
+                // Switch to About tab where the update UI lives
+            } else {
+                let alert = NSAlert()
+                alert.messageText = "No Updates Available"
+                alert.informativeText = "You're running the latest version of Clippy (v\(AppVersion.current))."
+                alert.alertStyle = .informational
+                alert.addButton(withTitle: "OK")
+                alert.runModal()
+            }
+        }
+    }
 
     @objc private func quitApp() {
         clipboardMonitor.stop()
