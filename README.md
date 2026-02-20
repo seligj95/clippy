@@ -6,7 +6,7 @@ A lightweight clipboard history manager for macOS, inspired by Windows' `Win+V`.
 
 ## Features
 
-- **Clipboard History** — Automatically saves text, images, and files you copy
+- **Clipboard History** — Automatically saves text, images (screenshots, photos), and files you copy
 - **Global Hotkey** — Press `⌘⇧V` to open the clipboard panel from any app
 - **Emoji Picker** — Browse and search emojis by keyword
 - **Search** — Filter clipboard history by content
