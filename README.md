@@ -49,7 +49,7 @@ Clippy requires **Accessibility** permission to paste into other apps:
 3. Toggle it on
 4. Restart Clippy if needed
 
-> **Note:** After an update, you may need to re-grant Accessibility permission since macOS ties it to the specific app binary.
+> **Note:** After an update, you may need to re-grant Accessibility permission since macOS ties it to the specific app binary. To do this, go to Accessibility settings, select Clippy, click **−** to remove it, then click **+** to re-add `Clippy.app`, and restart Clippy.
 
 ## Usage
 

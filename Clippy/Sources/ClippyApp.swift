@@ -54,7 +54,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                     let alert = NSAlert()
                     alert.messageText = "Clippy Updated to v\(currentVersion)"
-                    alert.informativeText = "After updating, macOS may require you to re-grant Accessibility permission.\n\nGo to System Settings > Privacy & Security > Accessibility, remove Clippy, then re-add it."
+                    alert.informativeText = "After updating, macOS may require you to re-grant Accessibility permission for pasting to work.\n\nTo fix this:\n1. Open System Settings > Privacy & Security > Accessibility\n2. Select Clippy and click the \"−\" button to remove it\n3. Click the \"+\" button to re-add Clippy.app\n4. Restart Clippy"
                     alert.alertStyle = .informational
                     alert.addButton(withTitle: "Open Accessibility Settings")
                     alert.addButton(withTitle: "Later")
