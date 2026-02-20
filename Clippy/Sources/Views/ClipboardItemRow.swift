@@ -8,6 +8,8 @@ struct ClipboardItemRow: View {
     let onDelete: () -> Void
     let onTogglePin: () -> Void
 
+    @State private var isHoveringImage = false
+
     var body: some View {
         Button(action: onPaste) {
             HStack(spacing: 10) {
@@ -57,6 +59,16 @@ struct ClipboardItemRow: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(maxHeight: 60)
                 .cornerRadius(4)
+                .onHover { hovering in
+                    isHoveringImage = hovering
+                }
+                .popover(isPresented: $isHoveringImage, arrowEdge: .trailing) {
+                    Image(nsImage: nsImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: 400, maxHeight: 400)
+                        .padding(8)
+                }
         } else if item.isFile, let url = item.fileURL {
             HStack(spacing: 6) {
                 Image(systemName: "doc")
