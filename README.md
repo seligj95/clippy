@@ -29,23 +29,7 @@ Download **Clippy.app.zip** from the [latest release](https://github.com/seligj9
 
 ## Building from Source
 
-If you'd prefer to build and bundle locally:
-
-```bash
-# Requires Swift 5.9+ / Swift Command Line Tools
-
-# Debug build
-swift build
-
-# Release build + .app bundle
-./bundle.sh
-
-# Copy to Applications
-cp -r Clippy.app /Applications/
-
-# Launch
-open /Applications/Clippy.app
-```
+If you'd prefer to build locally, see [CONTRIBUTING.md](CONTRIBUTING.md) for instructions. Requires Swift 5.9+ / Command Line Tools.
 
 ## Gatekeeper Notice
 
@@ -65,7 +49,7 @@ Clippy requires **Accessibility** permission to paste into other apps:
 3. Toggle it on
 4. Restart Clippy if needed
 
-> **Note:** If you rebuild and reinstall, you may need to remove and re-add Clippy in the Accessibility list since macOS ties permissions to the specific binary.
+> **Note:** After an update, you may need to re-grant Accessibility permission since macOS ties it to the specific app binary.
 
 ## Usage
 
@@ -80,42 +64,9 @@ Clippy requires **Accessibility** permission to paste into other apps:
 
 Access **Preferences** and **Quit** from the menu bar icon.
 
-## Project Structure
+## Contributing
 
-```
-Clippy/
-├── Sources/
-│   ├── ClippyApp.swift          # App entry point & AppDelegate
-│   ├── Models/
-│   │   ├── ClipboardItem.swift       # Clipboard data model
-│   │   ├── ClipboardItemContent.swift # Pasteboard type/data pair
-│   │   ├── EmojiData.swift           # Emoji catalog & search keywords
-│   │   └── AppVersion.swift          # Version constant & comparison
-│   ├── Services/
-│   │   ├── AccessibilityService.swift # AX permission checks
-│   │   ├── ClipboardMonitor.swift     # NSPasteboard polling
-│   │   ├── HotkeyService.swift        # Global hotkey (Carbon API)
-│   │   ├── PasteService.swift         # Paste simulation (CGEvent)
-│   │   ├── StorageManager.swift       # JSON file persistence
-│   │   └── UpdateService.swift        # GitHub release update checker
-│   └── Views/
-│       ├── ClipboardHistoryView.swift # Searchable history list
-│       ├── ClipboardItemRow.swift     # Individual item row
-│       ├── EmojiPickerView.swift      # Emoji grid with search
-│       ├── FloatingPanel.swift        # NSPanel (non-activating)
-│       ├── PanelContentView.swift     # Tab container
-│       └── SettingsView.swift         # Preferences window
-├── Info.plist
-└── Clippy.entitlements
-```
-
-## Data Storage
-
-Clipboard history is stored as JSON at:
-
-```
-~/Library/Application Support/Clippy/history.json
-```
+Found a bug or have a feature idea? [Open an issue](https://github.com/seligj95/clippy/issues). Pull requests are welcome too — see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## License
 
