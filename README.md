@@ -43,6 +43,15 @@ cp -r Clippy.app /Applications/
 open /Applications/Clippy.app
 ```
 
+## Gatekeeper Notice
+
+Since Clippy is not code-signed, macOS will block it the first time you open it. To allow it:
+
+- **Right-click** (or Control-click) `Clippy.app` → select **Open** → click **Open** in the dialog
+- Or run: `xattr -cr /Applications/Clippy.app` then open normally
+
+You only need to do this once.
+
 ## Permissions
 
 Clippy requires **Accessibility** permission to paste into other apps:
