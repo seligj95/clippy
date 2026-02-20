@@ -47,7 +47,7 @@ open /Applications/Clippy.app
 
 ## Gatekeeper Notice
 
-Since Clippy is not code-signed, macOS will block it the first time you open it. To allow it:
+Since Clippy is ad-hoc signed (not notarized with an Apple Developer ID), macOS may block it the first time you open it. To allow it:
 
 - **Right-click** (or Control-click) `Clippy.app` → select **Open** → click **Open** in the dialog
 - Or run: `xattr -cr /Applications/Clippy.app` then open normally

@@ -25,6 +25,10 @@ cp Clippy/AppIcon.icns "$BUNDLE_DIR/Contents/Resources/AppIcon.icns"
 # Create PkgInfo
 echo -n "APPL????" > "$BUNDLE_DIR/Contents/PkgInfo"
 
+# Ad-hoc code sign
+echo "Code signing..."
+codesign --force --deep --sign - "$BUNDLE_DIR"
+
 echo ""
 echo "✅ Created $BUNDLE_DIR"
 
