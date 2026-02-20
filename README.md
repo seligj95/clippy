@@ -32,6 +32,15 @@ swift build
 
 ## Installation
 
+### Download (recommended)
+
+1. Download **Clippy.app.zip** from the [latest release](https://github.com/seligj95/clippy/releases/latest)
+2. Unzip and move `Clippy.app` to `/Applications`
+3. Open Clippy — see [Gatekeeper Notice](#gatekeeper-notice) below if macOS blocks it
+4. Grant [Accessibility permission](#permissions)
+
+### Build from Source
+
 ```bash
 # Build and bundle
 ./bundle.sh
